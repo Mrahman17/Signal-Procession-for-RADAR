@@ -1,4 +1,4 @@
-function [RDM_mask, cfar_ranges, cfar_dopps, K] = ca_cfar(RDM_dB, numGuard, numTrain, P_fa, SNR_OFFSET)
+function [RDM_mask, cfar_ranges, cfar_dopps] = ca_cfar(RDM_dB, numGuard, numTrain, P_fa, SNR_OFFSET)
         % e.g. numGuard =2, numTrain =2*numGuard, P_fa =1e-5, SNR_OFFSET = -15
 numTrain2D = numTrain*numTrain - numGuard*numGuard;
 RDM_mask = zeros(size(RDM_dB));
@@ -23,17 +23,16 @@ end
 [cfar_ranges, cfar_dopps]= find(RDM_mask); % cfar detected range bins
 
 %% remaining part is for target location estimation
-rem_range = zeros(1,length(cfar_ranges));
-rem_dopp = zeros(1,length(cfar_dopps));
-for i = 2:length(cfar_ranges)
-   if (abs(cfar_ranges(i) - cfar_ranges(i-1)) <= 5) && (abs(cfar_dopps(i) - cfar_dopps(i-1)) <= 5)
-       rem_range(i) = i; % redundant range indices to be removed
-       rem_dopp(i) = i; % redundant doppler indices to be removed
-   end
-end
-rem_range = nonzeros(rem_range); % filter zeros
-rem_dopp = nonzeros(rem_dopp); % filter zeros
-cfar_ranges(rem_range) = [];
-cfar_dopps(rem_dopp) = [];
-K = length(cfar_dopps); % # of detected targets
+% rem_range = zeros(1,length(cfar_ranges));
+% rem_dopp = zeros(1,length(cfar_dopps));
+% for i = 2:length(cfar_ranges)
+%    if (abs(cfar_ranges(i) - cfar_ranges(i-1)) <= 5) && (abs(cfar_dopps(i) - cfar_dopps(i-1)) <= 5)
+%        rem_range(i) = i; % redundant range indices to be removed
+%        rem_dopp(i) = i; % redundant doppler indices to be removed
+%    end
+% end
+% rem_range = nonzeros(rem_range); % filter zeros
+% rem_dopp = nonzeros(rem_dopp); % filter zeros
+% cfar_ranges(rem_range) = [];
+% cfar_dopps(rem_dopp) = [];
 end
